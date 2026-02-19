@@ -218,8 +218,16 @@ Thanks so much! This helps us be fully prepared to take great care of ${p.pet} �
 
         case 'STEP_5_DAY_BEFORE':
           return `Hi ${p.owner}! Reminder for tomorrow’s drop-off at ${p.dropoff} 😊
-Please bring food, leash/harness, any medications (if any), and a crate if you have one.
-See you soon!`;
+Please bring:
+• Food (with feeding instructions)
+• Leash or harness
+• Any medications (if applicable)
+• Crate (optional, if ${p.pet} uses one)
+• Bed or blanket (optional, for comfort)
+
+If you don’t have a crate or bowls, just let us know.
+
+See you soon.`;
 
           case 'STEP_5A_PRE_ARRIVAL_CHECKLIST':
   return `Hi ${p.owner}! 😊
@@ -236,21 +244,18 @@ See you soon! 😊`;
 
         case 'STEP_6_ARRIVAL':
           return `Hi ${p.owner}! ${p.pet} is doing well and settling in nicely 😊
-I’ll keep you posted.`;
+I’ll keep you posted with updates.`;
 
         case 'STEP_7_DAILY':
           return `Hi ${p.owner}! Daily update on ${p.pet} 😊
 • Eating:
 • Potty:
 • Mood:
-• Walks/play:
-
-All good and relaxing comfortably.`;
+• Walks/play:`;
 
         case 'STEP_8_PICKUP_CONFIRM':
-          return `Hi ${p.owner}! just a heads-up that ${p.pet} 
-          boarding ends tomorrow at ${p.pickup}. 
-          Please let me know if you’ll be able to make it at that time, or if there are any changes, so I can plan accordingly.`;
+          return `Hi ${p.owner}! reminder that ${p.pet}’s pickup is scheduled for tomorrow at ${p.pickup}. 
+Please let us know if you will be arriving at that time or if any adjustments are needed.`;
 
         case 'STEP_9_THANKYOU_REVIEW':
           return `Thank you so much for trusting us with ${p.pet}! 😊
