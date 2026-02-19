@@ -185,19 +185,19 @@ We’re available for ${p.dates} and would love to help with ${p.pet}. I’m rev
 Just confirming:
 • Drop-off time: ${p.dropoff}
 • Pickup time: ${p.pickup}
-• Feeding on day 1: ${p.feed}
 
 Anything else we should know (meds, potty routine, crate, any triggers)?`;
 
         case 'STEP_2A_MEET_AND_GREET':
           return `Hi ${p.owner}! 😊
-We would like to schedule a meet & greet before the booking.
+Since this is your first booking with us. We would like to schedule a meet & greet before the booking.
 This helps ${p.pet} get familiar with us and gives us a chance to go over routines and care details. We typically meet at the St. Cloud Lakefront location.
 Please let us know a day and time that works best for you.`;
 
         case 'STEP_3_BOOKING_ACCEPTED':
-          return `Hi ${p.owner}! We can take ${p.pet} for ${p.dates} 😊
-Before we finalize, please confirm any feeding instructions, meds (if any), potty routine, and drop-off/pickup timing.`;
+          return `Hi ${p.owner}! It was nice meeting you and ${p.pet}. I’ve accepted the booking from my side. 
+ If you haven’t already, please go ahead and accept the booking on your end so the dates are confirmed on the calendar.
+ I will share the location details before the boarding date.`;
 
         case 'STEP_4_BOOKING_CONFIRMED':
           return `All set! We’re confirmed for ${p.dates} 😊
@@ -248,8 +248,9 @@ I’ll keep you posted.`;
 All good and relaxing comfortably.`;
 
         case 'STEP_8_PICKUP_CONFIRM':
-          return `Hi ${p.owner}! Confirming pickup at ${p.pickup} 😊
-${p.pet} is doing great and will be ready.`;
+          return `Hi ${p.owner}! just a heads-up that ${p.pet} 
+          boarding ends tomorrow at ${p.pickup}. 
+          Please let me know if you’ll be able to make it at that time, or if there are any changes, so I can plan accordingly.`;
 
         case 'STEP_9_THANKYOU_REVIEW':
           return `Thank you so much for trusting us with ${p.pet}! 😊
