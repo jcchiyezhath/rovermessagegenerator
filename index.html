@@ -44,6 +44,7 @@
     <option value="STEP_8_PICKUP_CONFIRM">Step 8 – Pickup confirmation</option>
     <option value="STEP_9_THANKYOU_REVIEW">Step 9 – Thank you + review</option>
     <option value="STEP_TIP_THANKYOU">Tip – Thank you for tip</option>
+    <option value="STEP_UNAVAILABLE_OUT_OF_TOWN">Unavailable – Out of town</option>
   </select>
 
   <div class="grid2">
@@ -126,6 +127,7 @@
       STEP_8_PICKUP_CONFIRM: ['owner','pet','pickup'],
       STEP_9_THANKYOU_REVIEW: ['pet'],
       STEP_TIP_THANKYOU: ['owner','pet'],
+      STEP_UNAVAILABLE_OUT_OF_TOWN: ['owner','pet','dates'],
     };
 
     function setStatus(text, ok) {
@@ -266,6 +268,9 @@ Thanks so much!`;
 
           case 'STEP_TIP_THANKYOU':
   return `Hi ${p.owner}! Thank you so much for the generous tip! Your support truly means a lot to us and motivates us to continue caring for your fur baby, with love. 😊`;
+
+          case 'STEP_UNAVAILABLE_OUT_OF_TOWN':
+  return `Hi ${p.owner}, thank you so much for reaching out about ${p.pet}. Unfortunately, we will be out of town on ${p.dates}, so we won’t be available during that time. We really appreciate you considering us.`;
 
         default:
           return '';
