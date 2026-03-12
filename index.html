@@ -364,7 +364,7 @@ Thanks so much!`;
       } catch {}
     }
 
-    els.genBtn.addEventListener('click', () => {
+    els.genBtn.addEventListener('click', async () => {
 
   const p = getPayload();
   const miss = missingFields(p);
@@ -377,7 +377,7 @@ Thanks so much!`;
   saveDraft(p);
 
   // save client to Firebase
-  saveClientToFirestore(els.owner.value, els.pet.value);
+  await saveClientToFirestore(els.owner.value, els.pet.value);
 
 });
 
