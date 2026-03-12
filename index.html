@@ -94,8 +94,64 @@
     <button id="clearBtn">Clear</button>
   </div>
 
-  <script>
-    const els = {
+  <script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { 
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  orderBy,
+  limit,
+  deleteDoc,
+  doc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCP5nbxogHb19ST586KU5qC5p0g3m1-w5M",
+  authDomain: "rover-message-generator.firebaseapp.com",
+  projectId: "rover-message-generator",
+  storageBucket: "rover-message-generator.firebasestorage.app",
+  messagingSenderId: "772518252501",
+  appId: "1:772518252501:web:38c7234aad39cbf243f75c"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const clientsRef = collection(db, "clients");
+    async function saveClientToFirestore(owner, pet) {
+  if (!owner || !pet) return;
+
+await addDoc(clientsRef, {
+  owner: owner.trim(),
+  pet: pet.trim(),
+  createdAt: serverTimestamp()
+});
+
+await keepOnlyRecentClients();
+}
+
+async function keepOnlyRecentClients() {
+  const q = query(clientsRef, orderBy("createdAt", "desc"));
+  const snapshot = await getDocs(q);
+
+  const docs = snapshot.docs;
+
+  if (docs.length <= 3) return;
+
+  const oldDocs = docs.slice(3);
+
+  for (const d of oldDocs) {
+    await deleteDoc(doc(db, "clients", d.id));
+  }
+}
+
+
+// your existing code continues here
+const els = {
       step: document.getElementById('step'),
       owner: document.getElementById('owner'),
       pet: document.getElementById('pet'),
@@ -296,16 +352,21 @@ Thanks so much!`;
     }
 
     els.genBtn.addEventListener('click', () => {
-      const p = getPayload();
-      const miss = missingFields(p);
 
-      if (!p.step) { setStatus('Choose a step first.', false); return; }
-      if (miss.length) { setStatus('Missing required: ' + miss.join(', '), false); return; }
+  const p = getPayload();
+  const miss = missingFields(p);
 
-      els.out.value = generateMessage(p);
-      setStatus('Ready to copy.', true);
-      saveDraft(p);
-    });
+  if (!p.step) { setStatus('Choose a step first.', false); return; }
+  if (miss.length) { setStatus('Missing required: ' + miss.join(', '), false); return; }
+
+  els.out.value = generateMessage(p);
+  setStatus('Ready to copy.', true);
+  saveDraft(p);
+
+  // save client to Firebase
+  saveClientToFirestore(els.owner.value, els.pet.value);
+
+});
 
     els.copyBtn.addEventListener('click', async () => {
       const text = els.out.value.trim();
