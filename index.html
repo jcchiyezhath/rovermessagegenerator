@@ -97,6 +97,12 @@
   <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { 
   getFirestore,
   collection,
@@ -122,6 +128,13 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const clientsRef = collection(db, "clients");
+async function ensureSignedIn() {
+  if (auth.currentUser) return auth.currentUser;
+  const result = await signInWithPopup(auth, provider);
+  return result.user;
+}
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
     async function saveClientToFirestore(owner, pet) {
   if (!owner || !pet) return;
 
