@@ -1,391 +1,596 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Rover Message Generator</title>
-
-<style>
-body { font-family: Arial, sans-serif; padding:14px; max-width:720px; margin:0 auto;}
-h2 { margin:6px 0 12px; }
-
-label { display:block; margin-top:10px; font-size:14px;}
-
-select,input,textarea,button{
-width:100%;
-padding:10px;
-margin-top:6px;
-font-size:16px;
-box-sizing:border-box;
-border:1px solid #ccc;
-border-radius:10px;
-}
-
-textarea{ height:210px;}
-
-.row{ margin-top:12px; display:grid; grid-template-columns:1fr; gap:10px;}
-
-.status{ margin-top:10px; font-size:14px;}
-.status.ok{ color:#1b5e20;}
-.status.err{ color:#b00020;}
-
-.pill{
-display:inline-block;
-padding:6px 10px;
-background:#f2f2f2;
-border-radius:999px;
-font-size:12px;
-margin-top:8px;
-}
-
-.grid2{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:10px;
-}
-
-@media (max-width:560px){
-.grid2{grid-template-columns:1fr;}
-}
-
-.muted{
-color:#666;
-font-size:12px;
-margin-top:6px;
-}
-
-.clientBtn{
-margin:4px;
-padding:8px 12px;
-border-radius:20px;
-border:1px solid #ddd;
-background:#fafafa;
-cursor:pointer;
-}
-.clientBtn:hover{
-background:#f0f0f0;
-}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rover Message Generator</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 14px; max-width: 720px; margin: 0 auto; }
+    h2 { margin: 6px 0 12px; }
+    label { display: block; margin-top: 10px; font-size: 14px; }
+    select, input, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      font-size: 16px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+    }
+    textarea { height: 210px; }
+    .row { margin-top: 12px; display: grid; grid-template-columns: 1fr; gap: 10px; }
+    .status { margin-top: 10px; font-size: 14px; }
+    .status.ok { color: #1b5e20; }
+    .status.err { color: #b00020; }
+    .pill {
+      display: inline-block;
+      padding: 6px 10px;
+      background: #f2f2f2;
+      border-radius: 999px;
+      font-size: 12px;
+      margin-top: 8px;
+    }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    @media (max-width: 560px) {
+      .grid2 { grid-template-columns: 1fr; }
+    }
+    .muted { color: #666; font-size: 12px; margin-top: 6px; }
+    .recent-wrap {
+      margin-top: 12px;
+      padding: 10px;
+      border: 1px solid #eee;
+      border-radius: 12px;
+      background: #fafafa;
+    }
+    .recent-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .recent-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .clientBtn {
+      width: auto;
+      margin: 0;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid #ddd;
+      background: #fff;
+      cursor: pointer;
+    }
+    .clientBtn:hover {
+      background: #f0f0f0;
+    }
+    .signInBtn {
+      width: auto;
+      margin: 0;
+      padding: 8px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 
 <body>
-
-<h2>Rover Message Generator</h2>
-
-<div class="pill" id="reqPill">Required fields will show here</div>
-
-<div id="recentClients" style="margin-top:12px;"></div>
-
-<label>Step</label>
-<select id="step">
-<option value="">-- Select --</option>
-<option value="STEP_1_FIRST_RESPONSE">Step 1 – First response + availability</option>
-<option value="STEP_2_CONFIRM_DETAILS">Step 2 – Confirm drop-off/pickup/feeding</option>
-<option value="STEP_2A_MEET_AND_GREET">Step 2A – Meet & greet</option>
-<option value="STEP_3_BOOKING_ACCEPTED">Step 3 – Booking accepted / next steps</option>
-<option value="STEP_4_BOOKING_CONFIRMED">Step 4 – Booking confirmed message</option>
-<option value="STEP_4A_INTAKE_QUESTIONS">Step 4A – Intake questions</option>
-<option value="STEP_5_DAY_BEFORE">Step 5 – Day-before reminder</option>
-<option value="STEP_5A_PRE_ARRIVAL_CHECKLIST">Step 5A – Pre-arrival checklist</option>
-<option value="STEP_6_ARRIVAL">Step 6 – Arrival update</option>
-<option value="STEP_7_DAILY">Step 7 – Daily update</option>
-<option value="STEP_8_PICKUP_CONFIRM">Step 8 – Pickup confirmation</option>
-<option value="STEP_9_THANKYOU_REVIEW">Step 9 – Thank you + review</option>
-<option value="STEP_TIP_THANKYOU">Tip – Thank you for tip</option>
-<option value="STEP_UNAVAILABLE_OUT_OF_TOWN">Unavailable – Out of town</option>
-</select>
-
-<div class="grid2">
-
-<div>
-<label>Owner name</label>
-<input id="owner" placeholder="e.g., Sarah" autocomplete="off">
-</div>
-
-<div>
-<label>Pet name</label>
-<input id="pet" placeholder="e.g., Milo" autocomplete="off">
-</div>
-
-</div>
-
-<label>Dates</label>
-<input id="dates" placeholder="e.g., Jan 12–15">
-
-<div class="grid2">
-
-<div>
-<label>Drop-off time</label>
-<input id="dropoff" placeholder="9:00 AM">
-</div>
-
-<div>
-<label>Pickup time</label>
-<input id="pickup" placeholder="6:00 PM">
-</div>
-
-</div>
-
-<label id="feedLabel">Feeding on day 1</label>
-
-<select id="feed">
-<option value="">-- Select feeding preference --</option>
-<option value="Feed right away at drop-off">Feed right away at drop-off</option>
-<option value="Wait until their usual feeding time">Wait until their usual feeding time</option>
-<option value="Owner will message me when to feed">Owner will message me when to feed</option>
-</select>
-
-<div class="muted" id="feedNote">This will be required only for Step 2.</div>
-
-<div class="row">
-<button id="genBtn">Generate Message</button>
-<div class="status" id="status"></div>
-</div>
-
-<label>Message</label>
-<textarea id="out"></textarea>
-
-<div class="row">
-<button id="copyBtn">Copy</button>
-<button id="clearBtn">Clear</button>
-</div>
-
-<script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import {
-getAuth,
-GoogleAuthProvider,
-signInWithPopup
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-
-import {
-getFirestore,
-collection,
-addDoc,
-getDocs,
-query,
-orderBy,
-limit,
-deleteDoc,
-doc,
-serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-
-const firebaseConfig = {
-apiKey:"AIzaSyCP5nbxogHb19ST586KU5qC5p0g3m1-w5M",
-authDomain:"rover-message-generator.firebaseapp.com",
-projectId:"rover-message-generator",
-storageBucket:"rover-message-generator.firebasestorage.app",
-messagingSenderId:"772518252501",
-appId:"1:772518252501:web:38c7234aad39cbf243f75c"
-};
-
-const app = initializeApp(firebaseConfig);
-
-const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
-
-const db = getFirestore(app);
-
-const clientsRef = collection(db,"clients");
-
-async function ensureSignedIn(){
-if(auth.currentUser) return auth.currentUser;
-const result = await signInWithPopup(auth,provider);
-return result.user;
-}
-
-
-async function saveClientToFirestore(owner,pet){
-
-await ensureSignedIn();
-
-if(!owner || !pet) return;
-
-await addDoc(clientsRef,{
-owner:owner.trim(),
-pet:pet.trim(),
-createdAt:serverTimestamp()
-});
-
-await keepOnlyRecentClients();
-}
-
-
-async function keepOnlyRecentClients(){
-
-const q = query(clientsRef,orderBy("createdAt","desc"));
-
-const snapshot = await getDocs(q);
-
-const docs = snapshot.docs;
-
-if(docs.length <=3) return;
-
-const oldDocs = docs.slice(3);
-
-for(const d of oldDocs){
-await deleteDoc(doc(db,"clients",d.id));
-}
-}
-
-
-async function loadRecentClients(){
-
-try{
-
-await ensureSignedIn();
-
-const q = query(clientsRef,orderBy("createdAt","desc"),limit(3));
-
-const snapshot = await getDocs(q);
-
-const container = document.getElementById("recentClients");
-
-container.innerHTML = "<b>Recent Clients:</b><br>";
-
-snapshot.forEach(doc=>{
-
-const data = doc.data();
-
-const btn = document.createElement("button");
-
-btn.className="clientBtn";
-
-btn.textContent=`${data.owner} – ${data.pet}`;
-
-btn.onclick=()=>{
-els.owner.value=data.owner;
-els.pet.value=data.pet;
-};
-
-container.appendChild(btn);
-
-});
-
-}catch(err){
-
-console.error("Recent client load error:",err);
-
-}
-
-}
-
-
-
-const els={
-step:document.getElementById("step"),
-owner:document.getElementById("owner"),
-pet:document.getElementById("pet"),
-dates:document.getElementById("dates"),
-dropoff:document.getElementById("dropoff"),
-pickup:document.getElementById("pickup"),
-feed:document.getElementById("feed"),
-out:document.getElementById("out"),
-status:document.getElementById("status"),
-reqPill:document.getElementById("reqPill"),
-genBtn:document.getElementById("genBtn"),
-copyBtn:document.getElementById("copyBtn"),
-clearBtn:document.getElementById("clearBtn"),
-feedLabel:document.getElementById("feedLabel"),
-feedNote:document.getElementById("feedNote")
-};
-
-
-function setStatus(text,ok){
-els.status.textContent=text||"";
-els.status.className="status "+(ok?"ok":"err");
-}
-
-
-function getPayload(){
-
-return{
-step:els.step.value,
-owner:els.owner.value.trim(),
-pet:els.pet.value.trim(),
-dates:els.dates.value.trim(),
-dropoff:els.dropoff.value.trim(),
-pickup:els.pickup.value.trim(),
-feed:els.feed.value.trim()
-};
-
-}
-
-
-
-function generateMessage(p){
-
-return `Hi ${p.owner}! Thanks for reaching out 😊
+  <h2>Rover Message Generator</h2>
+  <div class="pill" id="reqPill">Required fields will show here</div>
+
+  <div class="recent-wrap" id="recentClientsWrap">
+    <div class="recent-title">Recent Clients</div>
+    <div id="recentClients" class="recent-list"></div>
+    <div id="recentClientsNote" class="muted"></div>
+  </div>
+
+  <label>Step</label>
+  <select id="step">
+    <option value="">-- Select --</option>
+    <option value="STEP_1_FIRST_RESPONSE">Step 1 – First response + availability</option>
+    <option value="STEP_2_CONFIRM_DETAILS">Step 2 – Confirm drop-off/pickup/feeding</option>
+    <option value="STEP_2A_MEET_AND_GREET">Step 2A – Meet & greet</option>
+    <option value="STEP_3_BOOKING_ACCEPTED">Step 3 – Booking accepted / next steps</option>
+    <option value="STEP_4_BOOKING_CONFIRMED">Step 4 – Booking confirmed message</option>
+    <option value="STEP_4A_INTAKE_QUESTIONS">Step 4A – Intake questions (after booking)</option>
+    <option value="STEP_5_DAY_BEFORE">Step 5 – Day-before reminder</option>
+    <option value="STEP_5A_PRE_ARRIVAL_CHECKLIST">Step 5A – Pre-arrival checklist</option>
+    <option value="STEP_6_ARRIVAL">Step 6 – Arrival update</option>
+    <option value="STEP_7_DAILY">Step 7 – Daily update</option>
+    <option value="STEP_8_PICKUP_CONFIRM">Step 8 – Pickup confirmation</option>
+    <option value="STEP_9_THANKYOU_REVIEW">Step 9 – Thank you + review</option>
+    <option value="STEP_TIP_THANKYOU">Tip – Thank you for tip</option>
+    <option value="STEP_UNAVAILABLE_OUT_OF_TOWN">Unavailable – Out of town</option>
+  </select>
+
+  <div class="grid2">
+    <div>
+      <label>Owner name</label>
+      <input id="owner" placeholder="e.g., Sarah" autocomplete="off" />
+    </div>
+    <div>
+      <label>Pet name</label>
+      <input id="pet" placeholder="e.g., Milo" autocomplete="off" />
+    </div>
+  </div>
+
+  <label>Dates</label>
+  <input id="dates" placeholder="e.g., Jan 12–15" autocomplete="off" />
+
+  <div class="grid2">
+    <div>
+      <label>Drop-off time</label>
+      <input id="dropoff" placeholder="e.g., 9:00 AM" autocomplete="off" />
+    </div>
+    <div>
+      <label>Pickup time</label>
+      <input id="pickup" placeholder="e.g., 6:00 PM" autocomplete="off" />
+    </div>
+  </div>
+
+  <label id="feedLabel">Feeding on day 1</label>
+  <select id="feed">
+    <option value="">-- Select feeding preference --</option>
+    <option value="Feed right away at drop-off">Feed right away at drop-off</option>
+    <option value="Wait until their usual feeding time">Wait until their usual feeding time</option>
+    <option value="Owner will message me when to feed">Owner will message me when to feed</option>
+  </select>
+  <div class="muted" id="feedNote">This will be required only for Step 2.</div>
+
+  <div class="row">
+    <button id="genBtn">Generate Message</button>
+    <div class="status" id="status"></div>
+  </div>
+
+  <label>Message</label>
+  <textarea id="out" placeholder="Your message will appear here..."></textarea>
+
+  <div class="row">
+    <button id="copyBtn">Copy</button>
+    <button id="clearBtn">Clear</button>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import {
+      getAuth,
+      GoogleAuthProvider,
+      signInWithPopup,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import {
+      getFirestore,
+      collection,
+      getDocs,
+      query,
+      orderBy,
+      limit,
+      deleteDoc,
+      doc,
+      serverTimestamp,
+      setDoc
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCP5nbxogHb19ST586KU5qC5p0g3m1-w5M",
+      authDomain: "rover-message-generator.firebaseapp.com",
+      projectId: "rover-message-generator",
+      storageBucket: "rover-message-generator.firebasestorage.app",
+      messagingSenderId: "772518252501",
+      appId: "1:772518252501:web:38c7234aad39cbf243f75c"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+    const db = getFirestore(app);
+    const clientsRef = collection(db, "clients");
+
+    const DRAFT_KEY = "rover_msg_generator_v1";
+
+    const els = {
+      step: document.getElementById("step"),
+      owner: document.getElementById("owner"),
+      pet: document.getElementById("pet"),
+      dates: document.getElementById("dates"),
+      dropoff: document.getElementById("dropoff"),
+      pickup: document.getElementById("pickup"),
+      feed: document.getElementById("feed"),
+      out: document.getElementById("out"),
+      status: document.getElementById("status"),
+      reqPill: document.getElementById("reqPill"),
+      genBtn: document.getElementById("genBtn"),
+      copyBtn: document.getElementById("copyBtn"),
+      clearBtn: document.getElementById("clearBtn"),
+      feedLabel: document.getElementById("feedLabel"),
+      feedNote: document.getElementById("feedNote"),
+      recentClients: document.getElementById("recentClients"),
+      recentClientsNote: document.getElementById("recentClientsNote")
+    };
+
+    const requirements = {
+      STEP_1_FIRST_RESPONSE: ["owner", "pet", "dates"],
+      STEP_2_CONFIRM_DETAILS: ["owner", "pet", "dropoff", "pickup", "feed"],
+      STEP_2A_MEET_AND_GREET: ["owner", "pet"],
+      STEP_3_BOOKING_ACCEPTED: ["owner", "pet"],
+      STEP_4_BOOKING_CONFIRMED: ["pet", "dates", "dropoff", "pickup"],
+      STEP_4A_INTAKE_QUESTIONS: ["owner", "pet"],
+      STEP_5_DAY_BEFORE: ["owner", "pet", "dropoff"],
+      STEP_5A_PRE_ARRIVAL_CHECKLIST: ["owner", "pet"],
+      STEP_6_ARRIVAL: ["owner", "pet"],
+      STEP_7_DAILY: ["owner", "pet"],
+      STEP_8_PICKUP_CONFIRM: ["owner", "pet", "pickup"],
+      STEP_9_THANKYOU_REVIEW: ["pet"],
+      STEP_TIP_THANKYOU: ["owner", "pet"],
+      STEP_UNAVAILABLE_OUT_OF_TOWN: ["owner", "pet", "dates"]
+    };
+
+    function setStatus(text, ok) {
+      els.status.textContent = text || "";
+      els.status.className = "status " + (ok ? "ok" : "err");
+    }
+
+    function getPayload() {
+      return {
+        step: els.step.value,
+        owner: els.owner.value.trim(),
+        pet: els.pet.value.trim(),
+        dates: els.dates.value.trim(),
+        dropoff: els.dropoff.value.trim(),
+        pickup: els.pickup.value.trim(),
+        feed: els.feed.value.trim()
+      };
+    }
+
+    function missingFields(payload) {
+      const req = requirements[payload.step] || [];
+      return req.filter((key) => !payload[key] || !String(payload[key]).trim());
+    }
+
+    function reqLabelList(step) {
+      const map = {
+        owner: "Owner name",
+        pet: "Pet name",
+        dates: "Dates",
+        dropoff: "Drop-off time",
+        pickup: "Pickup time",
+        feed: "Feeding on day 1"
+      };
+      const req = requirements[step] || [];
+      if (!req.length) return "Select a step";
+      return "Required: " + req.map((k) => map[k] || k).join(", ");
+    }
+
+    function updateUIByStep() {
+      const step = els.step.value;
+      els.reqPill.textContent = reqLabelList(step);
+
+      const showFeed = step === "STEP_2_CONFIRM_DETAILS";
+      els.feed.style.display = showFeed ? "" : "none";
+      els.feedLabel.style.display = showFeed ? "" : "none";
+      els.feedNote.style.display = showFeed ? "" : "none";
+    }
+
+    function generateMessage(p) {
+      switch (p.step) {
+        case "STEP_1_FIRST_RESPONSE":
+          return `Hi ${p.owner}! Thanks for reaching out 😊
 We’re available for ${p.dates} and would love to help with ${p.pet}. I’m reviewing the details now and will confirm shortly.`;
 
-}
+        case "STEP_2_CONFIRM_DETAILS":
+          return `Hi ${p.owner}! Thanks for the details 😊
+Just confirming:
+• Drop-off time: ${p.dropoff}
+• Pickup time: ${p.pickup}
 
+Feeding on day 1: ${p.feed}
 
+Anything else we should know (meds, potty routine, crate, any triggers)?`;
 
-els.genBtn.addEventListener("click",async()=>{
+        case "STEP_2A_MEET_AND_GREET":
+          return `Hi ${p.owner}! 😊
+Since this is your first booking with us, we would like to schedule a meet & greet before the booking.
+This helps ${p.pet} get familiar with us and gives us a chance to go over routines and care details. We typically meet at the St. Cloud Lakefront location.
+Please let us know a day and time that works best for you.`;
 
-const p=getPayload();
+        case "STEP_3_BOOKING_ACCEPTED":
+          return `Hi ${p.owner}! It was nice meeting you and ${p.pet}. I’ve accepted the booking from my side.
+If you haven’t already, please go ahead and accept the booking on your end so the dates are confirmed on the calendar.
+I will share the location details before the boarding date.`;
 
-if(!p.step){
-setStatus("Choose a step first.",false);
-return;
-}
+        case "STEP_4_BOOKING_CONFIRMED":
+          return `All set! We’re confirmed for ${p.dates} 😊
+Drop-off at ${p.dropoff} and pickup at ${p.pickup}.
+Looking forward to caring for ${p.pet}!`;
 
-els.out.value=generateMessage(p);
+        case "STEP_4A_INTAKE_QUESTIONS":
+          return `Hi ${p.owner}! 😊
+Now that we’re all set for ${p.pet}’s stay, just a few quick questions so we can make everything smooth and comfortable:
 
-try{
+• How much food does ${p.pet} get per meal (cups or scoops)?
+• Any medications or allergies?
+• Is there a specific potty routine we should follow?
+• Does ${p.pet} have any triggers, anxiety, or habits we should know about?
+• Is ${p.pet} crate-trained? (Optional — totally okay if not)
 
-await saveClientToFirestore(p.owner,p.pet);
+Thanks so much! This helps us be fully prepared to take great care of ${p.pet} 💛`;
 
-await loadRecentClients();
+        case "STEP_5_DAY_BEFORE":
+          return `Hi ${p.owner}! Reminder for tomorrow’s drop-off at ${p.dropoff} 😊
+Please bring:
+• Food (with feeding instructions)
+• Leash or harness
+• Any medications (if applicable)
+• Crate (optional, if ${p.pet} uses one)
+• Bed or blanket (optional, for comfort)
 
-setStatus("Ready to copy. Client saved.",true);
+If you don’t have a crate or bowls, just let us know.
 
-}catch(err){
+See you soon.`;
 
-console.error(err);
+        case "STEP_5A_PRE_ARRIVAL_CHECKLIST":
+          return `Hi ${p.owner}! 😊
+Just a quick checklist for ${p.pet}’s upcoming stay:
 
-setStatus("Message generated but client not saved.",false);
+• Food (with feeding instructions)
+• Leash or harness
+• Any medications (if applicable)
+• Crate (optional, if ${p.pet} uses one)
+• Bed or blanket (optional, for comfort)
 
-}
+If you don’t have a crate or bowls, no worries at all — just let us know.
+See you soon! 😊`;
 
-});
+        case "STEP_6_ARRIVAL":
+          return `Hi ${p.owner}! ${p.pet} is doing well and settling in nicely 😊
+I’ll keep you posted with updates.`;
 
+        case "STEP_7_DAILY":
+          return `Hi ${p.owner}! Daily update on ${p.pet} 😊
+• Eating:
+• Potty:
+• Mood:
+• Walks/play:`;
 
-els.copyBtn.addEventListener("click",async()=>{
+        case "STEP_8_PICKUP_CONFIRM":
+          return `Hi ${p.owner}! Reminder that ${p.pet}’s pickup is scheduled for tomorrow at ${p.pickup}.
+Please let us know if you will be arriving at that time or if any adjustments are needed.`;
 
-const text=els.out.value.trim();
+        case "STEP_9_THANKYOU_REVIEW":
+          return `Thank you so much for trusting us with ${p.pet}! 😊
+We really enjoyed spending time with ${p.pet}.
+If you enjoyed our care, please leave us a 5-star rating and a quick comment about your experience — it really helps our small business grow.
+Rover also gives you the option to leave a tip after pickup, totally optional but always appreciated.
+Thanks so much!`;
 
-if(!text){
-setStatus("Generate a message first.",false);
-return;
-}
+        case "STEP_TIP_THANKYOU":
+          return `Hi ${p.owner}! Thank you so much for the generous tip! Your support truly means a lot to us and motivates us to continue caring for your fur baby with love. 😊`;
 
-await navigator.clipboard.writeText(text);
+        case "STEP_UNAVAILABLE_OUT_OF_TOWN":
+          return `Hi ${p.owner}, thank you so much for reaching out about ${p.pet}. Unfortunately, we will be out of town on ${p.dates}, so we won’t be available during that time. We really appreciate you considering us.`;
 
-setStatus("Copied. Paste into Rover.",true);
+        default:
+          return "";
+      }
+    }
 
-});
+    function saveDraft(p) {
+      try {
+        localStorage.setItem(DRAFT_KEY, JSON.stringify(p));
+      } catch {}
+    }
 
+    function loadDraft() {
+      try {
+        const raw = localStorage.getItem(DRAFT_KEY);
+        if (!raw) return;
+        const p = JSON.parse(raw);
+        if (p.step) els.step.value = p.step;
+        if (p.owner) els.owner.value = p.owner;
+        if (p.pet) els.pet.value = p.pet;
+        if (p.dates) els.dates.value = p.dates;
+        if (p.dropoff) els.dropoff.value = p.dropoff;
+        if (p.pickup) els.pickup.value = p.pickup;
+        if (p.feed) els.feed.value = p.feed;
+      } catch {}
+    }
 
-els.clearBtn.addEventListener("click",()=>{
+    function clearDraft() {
+      try {
+        localStorage.removeItem(DRAFT_KEY);
+      } catch {}
+    }
 
-els.owner.value="";
-els.pet.value="";
-els.dates.value="";
-els.dropoff.value="";
-els.pickup.value="";
-els.out.value="";
+    function makeClientId(owner, pet) {
+      const raw = `${owner}__${pet}`.trim().toLowerCase();
+      return raw.replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+    }
 
-});
+    async function signInNow() {
+      const result = await signInWithPopup(auth, provider);
+      return result.user;
+    }
 
+    async function ensureSignedInInteractive() {
+      if (auth.currentUser) return auth.currentUser;
+      return await signInNow();
+    }
 
-loadRecentClients();
+    function renderRecentClients(docs) {
+      els.recentClients.innerHTML = "";
+      els.recentClientsNote.textContent = "";
 
-</script>
+      if (!auth.currentUser) {
+        const btn = document.createElement("button");
+        btn.className = "signInBtn";
+        btn.textContent = "Sign in to load recent clients";
+        btn.onclick = async () => {
+          try {
+            await signInNow();
+            setStatus("Signed in.", true);
+          } catch (err) {
+            console.error("Sign-in failed:", err);
+            setStatus("Sign-in failed.", false);
+          }
+        };
+        els.recentClients.appendChild(btn);
+        els.recentClientsNote.textContent = "Recent clients will appear after sign-in.";
+        return;
+      }
 
+      if (!docs.length) {
+        els.recentClientsNote.textContent = "No recent clients yet.";
+        return;
+      }
+
+      for (const snap of docs) {
+        const data = snap.data();
+        const btn = document.createElement("button");
+        btn.className = "clientBtn";
+        btn.textContent = `${data.owner} – ${data.pet} (${data.dates || "No dates"})`;
+        btn.onclick = () => {
+          els.owner.value = data.owner || "";
+          els.pet.value = data.pet || "";
+          els.dates.value = data.dates || "";
+          els.dropoff.value = data.dropoff || "";
+          els.pickup.value = data.pickup || "";
+        };
+        els.recentClients.appendChild(btn);
+      }
+    }
+
+    async function keepOnlyRecentClients() {
+      const q = query(clientsRef, orderBy("updatedAt", "desc"));
+      const snapshot = await getDocs(q);
+      const docs = snapshot.docs;
+
+      if (docs.length <= 3) return;
+
+      const oldDocs = docs.slice(3);
+      for (const d of oldDocs) {
+        await deleteDoc(doc(db, "clients", d.id));
+      }
+    }
+
+    async function saveClientToFirestore(owner, pet, dates, dropoff, pickup) {
+      await ensureSignedInInteractive();
+
+      if (!owner || !pet) return;
+
+      const clientId = makeClientId(owner, pet);
+
+      await setDoc(doc(db, "clients", clientId), {
+        owner: owner.trim(),
+        pet: pet.trim(),
+        dates: (dates || "").trim(),
+        dropoff: (dropoff || "").trim(),
+        pickup: (pickup || "").trim(),
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+
+      await keepOnlyRecentClients();
+    }
+
+    async function loadRecentClients() {
+      try {
+        if (!auth.currentUser) {
+          renderRecentClients([]);
+          return;
+        }
+
+        const q = query(clientsRef, orderBy("updatedAt", "desc"), limit(3));
+        const snapshot = await getDocs(q);
+        renderRecentClients(snapshot.docs);
+      } catch (err) {
+        console.error("Recent client load error:", err);
+        els.recentClients.innerHTML = "";
+        els.recentClientsNote.textContent = "Could not load recent clients.";
+      }
+    }
+
+    els.genBtn.addEventListener("click", async () => {
+      const p = getPayload();
+      const miss = missingFields(p);
+
+      if (!p.step) {
+        setStatus("Choose a step first.", false);
+        return;
+      }
+
+      if (miss.length) {
+        setStatus("Missing required: " + miss.join(", "), false);
+        return;
+      }
+
+      els.out.value = generateMessage(p);
+      saveDraft(p);
+
+      try {
+        await saveClientToFirestore(
+          p.owner,
+          p.pet,
+          p.dates,
+          p.dropoff,
+          p.pickup
+        );
+        await loadRecentClients();
+        setStatus("Ready to copy. Client saved.", true);
+      } catch (err) {
+        console.error("Save failed:", err);
+        setStatus("Message generated, but client did not save.", false);
+      }
+    });
+
+    els.copyBtn.addEventListener("click", async () => {
+      const text = els.out.value.trim();
+      if (!text) {
+        setStatus("Generate a message first.", false);
+        return;
+      }
+
+      try {
+        await navigator.clipboard.writeText(text);
+        setStatus("Copied. Paste into Rover.", true);
+      } catch {
+        els.out.focus();
+        els.out.select();
+        setStatus("Copy manually (select text).", true);
+      }
+    });
+
+    els.clearBtn.addEventListener("click", () => {
+      els.step.value = "";
+      els.owner.value = "";
+      els.pet.value = "";
+      els.dates.value = "";
+      els.dropoff.value = "";
+      els.pickup.value = "";
+      els.feed.value = "";
+      els.out.value = "";
+      clearDraft();
+      updateUIByStep();
+      setStatus("", true);
+    });
+
+    els.step.addEventListener("change", () => {
+      updateUIByStep();
+      saveDraft(getPayload());
+    });
+
+    ["owner", "pet", "dates", "dropoff", "pickup", "feed"].forEach((key) => {
+      els[key].addEventListener("input", () => saveDraft(getPayload()));
+      if (els[key].tagName === "SELECT") {
+        els[key].addEventListener("change", () => saveDraft(getPayload()));
+      }
+    });
+
+    onAuthStateChanged(auth, async () => {
+      await loadRecentClients();
+    });
+
+    loadDraft();
+    updateUIByStep();
+    loadRecentClients();
+  </script>
 </body>
 </html>
