@@ -367,7 +367,6 @@ Thanks so much!`;
     }
 
     els.genBtn.addEventListener('click', async () => {
-
   const p = getPayload();
   const miss = missingFields(p);
 
@@ -375,12 +374,15 @@ Thanks so much!`;
   if (miss.length) { setStatus('Missing required: ' + miss.join(', '), false); return; }
 
   els.out.value = generateMessage(p);
-  setStatus('Ready to copy.', true);
   saveDraft(p);
 
-  // save client to Firebase
-  await saveClientToFirestore(els.owner.value, els.pet.value);
-
+  try {
+    await saveClientToFirestore(els.owner.value, els.pet.value);
+    setStatus('Ready to copy. Client saved.', true);
+  } catch (err) {
+    console.error('Save failed:', err);
+    setStatus('Message generated, but client did not save.', false);
+  }
 });
 
     els.copyBtn.addEventListener('click', async () => {
