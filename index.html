@@ -135,16 +135,18 @@ async function ensureSignedIn() {
 }
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
-    async function saveClientToFirestore(owner, pet) {
+async function saveClientToFirestore(owner, pet) {
+  await ensureSignedIn();
+
   if (!owner || !pet) return;
 
-await addDoc(clientsRef, {
-  owner: owner.trim(),
-  pet: pet.trim(),
-  createdAt: serverTimestamp()
-});
+  await addDoc(clientsRef, {
+    owner: owner.trim(),
+    pet: pet.trim(),
+    createdAt: serverTimestamp()
+  });
 
-await keepOnlyRecentClients();
+  await keepOnlyRecentClients();
 }
 
 async function keepOnlyRecentClients() {
