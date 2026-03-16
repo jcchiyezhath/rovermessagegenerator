@@ -201,12 +201,27 @@
     </div>
   </div>
 
-  <div class="tab-panel" id="addBookingTab">
-    <div class="card">
-      <h3>Add Booking</h3>
-      <p>This is where we will manually add Rover bookings.</p>
-    </div>
+ <div class="tab-panel" id="addBookingTab">
+  <div class="card">
+    <h3>Add Booking</h3>
+
+    <label>Owner name</label>
+    <input id="bookingOwner" placeholder="Owner name">
+
+    <label>Dog name</label>
+    <input id="bookingDog" placeholder="Dog name">
+
+    <label>Start date</label>
+    <input type="date" id="bookingStart">
+
+    <label>End date</label>
+    <input type="date" id="bookingEnd">
+
+    <button id="saveBookingBtn">Save Booking</button>
+
+    <div id="bookingStatus" class="status"></div>
   </div>
+</div>
 
   <div class="tab-panel" id="calendarTab">
     <div class="card">
