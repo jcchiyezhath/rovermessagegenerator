@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Rover Message Generator</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 14px; max-width: 720px; margin: 0 auto; }
+    body { font-family: Arial, sans-serif; padding: 14px; max-width: 980px; margin: 0 auto; }
     h2 { margin: 6px 0 12px; }
     h3 { margin: 0 0 8px; }
     label { display: block; margin-top: 10px; font-size: 14px; }
@@ -32,17 +32,20 @@
       margin-top: 8px;
     }
     .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    @media (max-width: 560px) {
-      .grid2 { grid-template-columns: 1fr; }
+    .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+    @media (max-width: 700px) {
+      .grid2, .grid3 { grid-template-columns: 1fr; }
     }
     .muted { color: #666; font-size: 12px; margin-top: 6px; }
-    .recent-wrap {
+
+    .recent-wrap, .card {
       margin-top: 12px;
-      padding: 10px;
+      padding: 14px;
       border: 1px solid #eee;
       border-radius: 12px;
       background: #fafafa;
     }
+
     .recent-title {
       font-size: 13px;
       font-weight: 600;
@@ -62,9 +65,8 @@
       background: #fff;
       cursor: pointer;
     }
-    .clientBtn:hover {
-      background: #f0f0f0;
-    }
+    .clientBtn:hover { background: #f0f0f0; }
+
     .signInBtn {
       width: auto;
       margin: 0;
@@ -72,6 +74,7 @@
       border-radius: 10px;
       cursor: pointer;
     }
+
     .tabs {
       display: flex;
       gap: 8px;
@@ -92,19 +95,141 @@
       color: #fff;
       border-color: #111;
     }
-    .tab-panel {
-      display: none;
+    .tab-panel { display: none; margin-top: 10px; }
+    .tab-panel.active { display: block; }
+
+    .booking-item {
+      border: 1px solid #e4e4e4;
+      border-radius: 12px;
+      padding: 10px;
+      margin-top: 10px;
+      background: #fff;
+    }
+    .booking-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .booking-actions button {
+      width: auto;
+      padding: 8px 12px;
+      margin-top: 0;
+    }
+
+    .availability-result {
+      border: 1px solid #e4e4e4;
+      border-radius: 12px;
+      background: #fff;
+      padding: 10px;
       margin-top: 10px;
     }
-    .tab-panel.active {
-      display: block;
+    .availability-day {
+      border-top: 1px solid #eee;
+      padding: 10px 0;
     }
-    .card {
+    .availability-day:first-child {
+      border-top: none;
+      padding-top: 0;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      margin-left: 6px;
+      border: 1px solid #ddd;
+      background: #fff;
+    }
+    .badge.full {
+      background: #fde7e7;
+      border-color: #f5b5b5;
+      color: #9f1d1d;
+    }
+    .badge.open {
+      background: #e9f8ee;
+      border-color: #b6e2c1;
+      color: #186a2c;
+    }
+
+    .calendar-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    .calendar-toolbar .month-title {
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .calendar-toolbar .navs {
+      display: flex;
+      gap: 8px;
+    }
+    .calendar-toolbar .navs button {
+      width: auto;
+      margin-top: 0;
+      padding: 8px 12px;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+    }
+    .calendar-head {
+      font-weight: 700;
+      text-align: center;
+      padding: 8px 0;
+      color: #555;
+    }
+    .calendar-cell {
+      min-height: 120px;
+      border: 1px solid #e4e4e4;
+      border-radius: 12px;
+      background: #fff;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .calendar-cell.other-month {
+      opacity: 0.45;
+      background: #f8f8f8;
+    }
+    .calendar-date {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .calendar-count {
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      border: 1px solid #ddd;
+      background: #fff;
+    }
+    .calendar-count.full {
+      background: #fde7e7;
+      border-color: #f5b5b5;
+      color: #9f1d1d;
+    }
+    .calendar-count.open {
+      background: #e9f8ee;
+      border-color: #b6e2c1;
+      color: #186a2c;
+    }
+    .dog-chip {
+      font-size: 11px;
+      padding: 4px 6px;
+      border-radius: 8px;
+      background: #f2f2f2;
       border: 1px solid #e5e5e5;
-      border-radius: 14px;
-      padding: 14px;
-      margin-top: 12px;
-      background: #fafafa;
+      line-height: 1.2;
+      word-break: break-word;
     }
   </style>
 </head>
@@ -158,7 +283,7 @@
     </div>
 
     <label>Dates</label>
-    <input id="dates" placeholder="e.g., Jan 12–15" autocomplete="off" />
+    <input id="dates" placeholder="e.g., Mar 20–23" autocomplete="off" />
 
     <div class="grid2">
       <div>
@@ -197,7 +322,26 @@
   <div class="tab-panel" id="availabilityTab">
     <div class="card">
       <h3>Availability Checker</h3>
-      <p>This section will show how many dogs are booked for selected dates.</p>
+      <div class="muted">Dog limit per day: <span id="dogLimitLabel">3</span></div>
+
+      <div class="grid2">
+        <div>
+          <label>Requested start date</label>
+          <input type="date" id="availabilityStart">
+        </div>
+        <div>
+          <label>Requested end date</label>
+          <input type="date" id="availabilityEnd">
+        </div>
+      </div>
+
+      <div class="row">
+        <button id="checkAvailabilityBtn">Check Availability</button>
+        <div id="availabilityStatus" class="status"></div>
+      </div>
+
+      <div id="availabilitySummary" class="muted"></div>
+      <div id="availabilityResults"></div>
     </div>
   </div>
 
@@ -211,23 +355,41 @@
       <label>Dog name</label>
       <input id="bookingDog" placeholder="Dog name">
 
-      <label>Start date</label>
-      <input type="date" id="bookingStart">
-
-      <label>End date</label>
-      <input type="date" id="bookingEnd">
+      <div class="grid2">
+        <div>
+          <label>Start date</label>
+          <input type="date" id="bookingStart">
+        </div>
+        <div>
+          <label>End date</label>
+          <input type="date" id="bookingEnd">
+        </div>
+      </div>
 
       <button id="saveBookingBtn">Save Booking</button>
       <button id="deleteBookingBtn">Delete Booking</button>
 
       <div id="bookingStatus" class="status"></div>
+
+      <div class="card">
+        <h3>Saved Bookings</h3>
+        <div id="bookingList"></div>
+      </div>
     </div>
   </div>
 
   <div class="tab-panel" id="calendarTab">
     <div class="card">
-      <h3>Calendar</h3>
-      <p>This will show your dogs booked by date.</p>
+      <div class="calendar-toolbar">
+        <div class="month-title" id="calendarMonthTitle">Calendar</div>
+        <div class="navs">
+          <button id="prevMonthBtn" type="button">Previous</button>
+          <button id="todayMonthBtn" type="button">Today</button>
+          <button id="nextMonthBtn" type="button">Next</button>
+        </div>
+      </div>
+      <div class="muted">Dog limit per day: <span id="calendarDogLimitLabel">3</span></div>
+      <div id="calendarGrid"></div>
     </div>
   </div>
 
@@ -261,14 +423,17 @@
       appId: "1:772518252501:web:38c7234aad39cbf243f75c"
     };
 
+    const DOG_LIMIT = 3;
+    const DRAFT_KEY = "rover_msg_generator_v1";
+    let allBookings = [];
+    let currentCalendarDate = new Date();
+
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
     const db = getFirestore(app);
     const clientsRef = collection(db, "clients");
     const bookingsRef = collection(db, "bookings");
-
-    const DRAFT_KEY = "rover_msg_generator_v1";
 
     const els = {
       step: document.getElementById("step"),
@@ -286,16 +451,38 @@
       clearBtn: document.getElementById("clearBtn"),
       feedLabel: document.getElementById("feedLabel"),
       feedNote: document.getElementById("feedNote"),
+
       recentClients: document.getElementById("recentClients"),
       recentClientsNote: document.getElementById("recentClientsNote"),
+
       bookingOwner: document.getElementById("bookingOwner"),
       bookingDog: document.getElementById("bookingDog"),
       bookingStart: document.getElementById("bookingStart"),
       bookingEnd: document.getElementById("bookingEnd"),
       saveBookingBtn: document.getElementById("saveBookingBtn"),
       deleteBookingBtn: document.getElementById("deleteBookingBtn"),
-      bookingStatus: document.getElementById("bookingStatus")
+      bookingStatus: document.getElementById("bookingStatus"),
+      bookingList: document.getElementById("bookingList"),
+
+      availabilityStart: document.getElementById("availabilityStart"),
+      availabilityEnd: document.getElementById("availabilityEnd"),
+      checkAvailabilityBtn: document.getElementById("checkAvailabilityBtn"),
+      availabilityStatus: document.getElementById("availabilityStatus"),
+      availabilitySummary: document.getElementById("availabilitySummary"),
+      availabilityResults: document.getElementById("availabilityResults"),
+
+      calendarMonthTitle: document.getElementById("calendarMonthTitle"),
+      calendarGrid: document.getElementById("calendarGrid"),
+      prevMonthBtn: document.getElementById("prevMonthBtn"),
+      todayMonthBtn: document.getElementById("todayMonthBtn"),
+      nextMonthBtn: document.getElementById("nextMonthBtn"),
+
+      dogLimitLabel: document.getElementById("dogLimitLabel"),
+      calendarDogLimitLabel: document.getElementById("calendarDogLimitLabel")
     };
+
+    els.dogLimitLabel.textContent = String(DOG_LIMIT);
+    els.calendarDogLimitLabel.textContent = String(DOG_LIMIT);
 
     const requirements = {
       STEP_1_FIRST_RESPONSE: ["owner", "pet", "dates"],
@@ -317,6 +504,16 @@
     function setStatus(text, ok) {
       els.status.textContent = text || "";
       els.status.className = "status " + (ok ? "ok" : "err");
+    }
+
+    function setBookingStatus(text, ok) {
+      els.bookingStatus.textContent = text || "";
+      els.bookingStatus.className = "status " + (ok ? "ok" : "err");
+    }
+
+    function setAvailabilityStatus(text, ok) {
+      els.availabilityStatus.textContent = text || "";
+      els.availabilityStatus.className = "status " + (ok ? "ok" : "err");
     }
 
     function getPayload() {
@@ -495,6 +692,13 @@ Thanks so much!`;
       return raw.replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
     }
 
+    function makeBookingId(owner, dog, start, end) {
+      return `${owner}-${dog}-${start}-${end}`
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+    }
+
     async function signInNow() {
       const result = await signInWithPopup(auth, provider);
       return result.user;
@@ -625,10 +829,7 @@ Thanks so much!`;
         throw new Error("Missing booking fields.");
       }
 
-      const bookingId = `${owner}-${dog}-${start}-${end}`
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-+|-+$/g, "");
+      const bookingId = makeBookingId(owner, dog, start, end);
 
       await setDoc(doc(db, "bookings", bookingId), {
         owner: owner.trim(),
@@ -639,6 +840,275 @@ Thanks so much!`;
       }, { merge: true });
     }
 
+    function localDateFromISO(iso) {
+      const [y, m, d] = iso.split("-").map(Number);
+      return new Date(y, m - 1, d);
+    }
+
+    function isoFromDate(date) {
+      const y = date.getFullYear();
+      const m = String(date.getMonth() + 1).padStart(2, "0");
+      const d = String(date.getDate()).padStart(2, "0");
+      return `${y}-${m}-${d}`;
+    }
+
+    function prettyDate(iso) {
+      const dt = localDateFromISO(iso);
+      return dt.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+    }
+
+    function enumerateDates(startISO, endISO) {
+      const dates = [];
+      let current = localDateFromISO(startISO);
+      const end = localDateFromISO(endISO);
+
+      while (current <= end) {
+        dates.push(isoFromDate(current));
+        current.setDate(current.getDate() + 1);
+      }
+      return dates;
+    }
+
+    function bookingIncludesDate(booking, isoDate) {
+      return booking.start <= isoDate && booking.end >= isoDate;
+    }
+
+    function getBookingsForDate(isoDate) {
+      return allBookings.filter((b) => bookingIncludesDate(b, isoDate));
+    }
+
+    async function loadBookings() {
+      try {
+        if (!auth.currentUser) {
+          allBookings = [];
+          els.bookingList.innerHTML = "<div class='muted'>Sign in to view bookings.</div>";
+          els.availabilityResults.innerHTML = "";
+          els.availabilitySummary.textContent = "";
+          renderCalendar();
+          return;
+        }
+
+        const q = query(bookingsRef, orderBy("createdAt", "desc"));
+        const snapshot = await getDocs(q);
+
+        allBookings = snapshot.docs.map((snap) => ({
+          id: snap.id,
+          ...snap.data()
+        }));
+
+        renderBookingList();
+        renderCalendar();
+      } catch (err) {
+        console.error("Load bookings failed:", err);
+        allBookings = [];
+        els.bookingList.innerHTML = "<div class='muted'>Could not load bookings.</div>";
+        renderCalendar();
+      }
+    }
+
+    function renderBookingList() {
+      els.bookingList.innerHTML = "";
+
+      if (!auth.currentUser) {
+        els.bookingList.innerHTML = "<div class='muted'>Sign in to view bookings.</div>";
+        return;
+      }
+
+      if (!allBookings.length) {
+        els.bookingList.innerHTML = "<div class='muted'>No bookings yet.</div>";
+        return;
+      }
+
+      allBookings.forEach((booking) => {
+        const wrap = document.createElement("div");
+        wrap.className = "booking-item";
+
+        const line1 = document.createElement("div");
+        line1.innerHTML = `<strong>${booking.owner}</strong> — ${booking.dog}`;
+
+        const line2 = document.createElement("div");
+        line2.className = "muted";
+        line2.textContent = `${prettyDate(booking.start)} to ${prettyDate(booking.end)}`;
+
+        const actions = document.createElement("div");
+        actions.className = "booking-actions";
+
+        const fillBtn = document.createElement("button");
+        fillBtn.textContent = "Load Into Form";
+        fillBtn.type = "button";
+        fillBtn.addEventListener("click", () => {
+          els.bookingOwner.value = booking.owner || "";
+          els.bookingDog.value = booking.dog || "";
+          els.bookingStart.value = booking.start || "";
+          els.bookingEnd.value = booking.end || "";
+          setBookingStatus("Booking loaded into form.", true);
+        });
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Delete";
+        deleteBtn.type = "button";
+        deleteBtn.addEventListener("click", async () => {
+          try {
+            await deleteDoc(doc(db, "bookings", booking.id));
+            setBookingStatus("Booking deleted.", true);
+            await loadBookings();
+          } catch (err) {
+            console.error("Delete failed:", err);
+            setBookingStatus("Could not delete booking.", false);
+          }
+        });
+
+        actions.appendChild(fillBtn);
+        actions.appendChild(deleteBtn);
+
+        wrap.appendChild(line1);
+        wrap.appendChild(line2);
+        wrap.appendChild(actions);
+
+        els.bookingList.appendChild(wrap);
+      });
+    }
+
+    async function checkAvailability() {
+      const start = els.availabilityStart.value;
+      const end = els.availabilityEnd.value;
+
+      if (!start || !end) {
+        setAvailabilityStatus("Please select both dates.", false);
+        return;
+      }
+
+      if (start > end) {
+        setAvailabilityStatus("Start date must be before end date.", false);
+        return;
+      }
+
+      const days = enumerateDates(start, end);
+      els.availabilityResults.innerHTML = "";
+
+      let fullyBookedDays = 0;
+
+      days.forEach((isoDate) => {
+        const bookings = getBookingsForDate(isoDate);
+        const count = bookings.length;
+        const isFull = count >= DOG_LIMIT;
+
+        if (isFull) fullyBookedDays += 1;
+
+        const wrap = document.createElement("div");
+        wrap.className = "availability-result availability-day";
+
+        const names = bookings.length
+          ? bookings.map((b) => `${b.dog} (${b.owner})`).join(", ")
+          : "No dogs booked";
+
+        wrap.innerHTML = `
+          <div><strong>${prettyDate(isoDate)}</strong>
+            <span class="badge ${isFull ? "full" : "open"}">
+              ${count}/${DOG_LIMIT} ${isFull ? "FULL" : "OPEN"}
+            </span>
+          </div>
+          <div class="muted" style="margin-top:6px;">${names}</div>
+        `;
+
+        els.availabilityResults.appendChild(wrap);
+      });
+
+      if (fullyBookedDays === 0) {
+        setAvailabilityStatus("All requested dates have space.", true);
+        els.availabilitySummary.textContent = `${days.length} day(s) checked. No days are full.`;
+      } else {
+        setAvailabilityStatus("Some requested dates are full.", false);
+        els.availabilitySummary.textContent = `${fullyBookedDays} of ${days.length} day(s) are full.`;
+      }
+    }
+
+    function renderCalendar() {
+      const monthStart = new Date(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth(), 1);
+      const monthEnd = new Date(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth() + 1, 0);
+
+      els.calendarMonthTitle.textContent = monthStart.toLocaleDateString(undefined, {
+        month: "long",
+        year: "numeric"
+      });
+
+      const firstWeekday = monthStart.getDay();
+      const totalDays = monthEnd.getDate();
+
+      const prevMonthEnd = new Date(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth(), 0);
+      const prevMonthDays = prevMonthEnd.getDate();
+
+      const cells = [];
+      const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+      let gridHTML = `<div class="calendar-grid">`;
+      dayNames.forEach((d) => {
+        gridHTML += `<div class="calendar-head">${d}</div>`;
+      });
+
+      for (let i = 0; i < firstWeekday; i++) {
+        const dayNum = prevMonthDays - firstWeekday + i + 1;
+        const date = new Date(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth() - 1, dayNum);
+        cells.push({ date, otherMonth: true });
+      }
+
+      for (let day = 1; day <= totalDays; day++) {
+        const date = new Date(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth(), day);
+        cells.push({ date, otherMonth: false });
+      }
+
+      while (cells.length % 7 !== 0) {
+        const dayNum = cells.length - (firstWeekday + totalDays) + 1;
+        const date = new Date(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth() + 1, dayNum);
+        cells.push({ date, otherMonth: true });
+      }
+
+      cells.forEach(({ date, otherMonth }) => {
+        const isoDate = isoFromDate(date);
+        const bookings = getBookingsForDate(isoDate);
+        const count = bookings.length;
+        const isFull = count >= DOG_LIMIT;
+
+        const chips = bookings.map((b) => `<div class="dog-chip">${b.dog}</div>`).join("");
+
+        gridHTML += `
+          <div class="calendar-cell ${otherMonth ? "other-month" : ""}">
+            <div class="calendar-date">
+              <span>${date.getDate()}</span>
+              <span class="calendar-count ${isFull ? "full" : "open"}">${count}/${DOG_LIMIT}</span>
+            </div>
+            ${chips}
+          </div>
+        `;
+      });
+
+      gridHTML += `</div>`;
+      els.calendarGrid.innerHTML = gridHTML;
+    }
+
+    els.prevMonthBtn.addEventListener("click", () => {
+      currentCalendarDate = new Date(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth() - 1, 1);
+      renderCalendar();
+    });
+
+    els.todayMonthBtn.addEventListener("click", () => {
+      currentCalendarDate = new Date();
+      renderCalendar();
+    });
+
+    els.nextMonthBtn.addEventListener("click", () => {
+      currentCalendarDate = new Date(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth() + 1, 1);
+      renderCalendar();
+    });
+
+    if (els.checkAvailabilityBtn) {
+      els.checkAvailabilityBtn.addEventListener("click", async () => {
+        await ensureSignedInInteractive();
+        await loadBookings();
+        await checkAvailability();
+      });
+    }
+
     if (els.saveBookingBtn) {
       els.saveBookingBtn.addEventListener("click", async () => {
         const owner = els.bookingOwner.value.trim();
@@ -647,66 +1117,63 @@ Thanks so much!`;
         const end = els.bookingEnd.value;
 
         if (!owner || !dog || !start || !end) {
-          els.bookingStatus.textContent = "Please fill all booking fields.";
-          els.bookingStatus.className = "status err";
+          setBookingStatus("Please fill all booking fields.", false);
+          return;
+        }
+
+        if (start > end) {
+          setBookingStatus("Start date must be before end date.", false);
           return;
         }
 
         try {
           await saveBookingToFirestore(owner, dog, start, end);
 
-          els.bookingStatus.textContent = "Booking saved.";
-          els.bookingStatus.className = "status ok";
+          setBookingStatus("Booking saved.", true);
 
           els.bookingOwner.value = "";
           els.bookingDog.value = "";
           els.bookingStart.value = "";
           els.bookingEnd.value = "";
+
+          await loadBookings();
         } catch (err) {
           console.error("Booking save failed:", err);
-          els.bookingStatus.textContent = "Could not save booking.";
-          els.bookingStatus.className = "status err";
+          setBookingStatus("Could not save booking.", false);
         }
       });
     }
 
     if (els.deleteBookingBtn) {
-  els.deleteBookingBtn.addEventListener("click", async () => {
+      els.deleteBookingBtn.addEventListener("click", async () => {
+        const owner = els.bookingOwner.value.trim();
+        const dog = els.bookingDog.value.trim();
+        const start = els.bookingStart.value;
+        const end = els.bookingEnd.value;
 
-    const owner = els.bookingOwner.value.trim();
-    const dog = els.bookingDog.value.trim();
-    const start = els.bookingStart.value;
-    const end = els.bookingEnd.value;
+        if (!owner || !dog || !start || !end) {
+          setBookingStatus("Enter the booking details to delete.", false);
+          return;
+        }
 
-    if (!owner || !dog || !start || !end) {
-      els.bookingStatus.textContent = "Enter the booking details to delete.";
-      els.bookingStatus.className = "status err";
-      return;
+        try {
+          const bookingId = makeBookingId(owner, dog, start, end);
+          await deleteDoc(doc(db, "bookings", bookingId));
+
+          setBookingStatus("Booking deleted.", true);
+
+          els.bookingOwner.value = "";
+          els.bookingDog.value = "";
+          els.bookingStart.value = "";
+          els.bookingEnd.value = "";
+
+          await loadBookings();
+        } catch (err) {
+          console.error("Delete failed:", err);
+          setBookingStatus("Could not delete booking.", false);
+        }
+      });
     }
-
-    try {
-
-      const bookingId = `${owner}-${dog}-${start}-${end}`
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-+|-+$/g, "");
-
-      await deleteDoc(doc(db, "bookings", bookingId));
-
-      els.bookingStatus.textContent = "Booking deleted.";
-      els.bookingStatus.className = "status ok";
-
-    } catch (err) {
-
-      console.error("Delete failed:", err);
-
-      els.bookingStatus.textContent = "Could not delete booking.";
-      els.bookingStatus.className = "status err";
-
-    }
-
-  });
-}
 
     els.genBtn.addEventListener("click", async () => {
       const p = getPayload();
@@ -786,11 +1253,14 @@ Thanks so much!`;
 
     onAuthStateChanged(auth, async () => {
       await loadRecentClients();
+      await loadBookings();
     });
 
     loadDraft();
     updateUIByStep();
     loadRecentClients();
+    loadBookings();
+    renderCalendar();
     setupTabs();
   </script>
 </body>
