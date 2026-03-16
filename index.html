@@ -265,6 +265,7 @@
     const provider = new GoogleAuthProvider();
     const db = getFirestore(app);
     const clientsRef = collection(db, "clients");
+    const bookingsRef = collection(db, "bookings");
 
     const DRAFT_KEY = "rover_msg_generator_v1";
 
@@ -286,6 +287,12 @@
       feedNote: document.getElementById("feedNote"),
       recentClients: document.getElementById("recentClients"),
       recentClientsNote: document.getElementById("recentClientsNote")
+      bookingOwner: document.getElementById("bookingOwner"),
+      bookingDog: document.getElementById("bookingDog"),
+      bookingStart: document.getElementById("bookingStart"),
+      bookingEnd: document.getElementById("bookingEnd"),
+      saveBookingBtn: document.getElementById("saveBookingBtn"),
+      bookingStatus: document.getElementById("bookingStatus")
     };
 
     const requirements = {
@@ -608,6 +615,63 @@ Thanks so much!`;
         });
       });
     }
+
+    async function saveBookingToFirestore(owner, dog, start, end) {
+  await ensureSignedInInteractive();
+
+  if (!owner || !dog || !start || !end) {
+    throw new Error("Missing booking fields.");
+  }
+
+  const bookingId = `${owner}-${dog}-${start}-${end}`
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+  await setDoc(doc(db, "bookings", bookingId), {
+    owner: owner.trim(),
+    dog: dog.trim(),
+    start,
+    end,
+    createdAt: serverTimestamp()
+  }, { merge: true });
+}
+
+  els.saveBookingBtn.addEventListener("click", async () => {
+
+  const owner = els.bookingOwner.value.trim();
+  const dog = els.bookingDog.value.trim();
+  const start = els.bookingStart.value;
+  const end = els.bookingEnd.value;
+
+  if (!owner || !dog || !start || !end) {
+    els.bookingStatus.textContent = "Please fill all booking fields.";
+    els.bookingStatus.className = "status err";
+    return;
+  }
+
+  try {
+
+    await saveBookingToFirestore(owner, dog, start, end);
+
+    els.bookingStatus.textContent = "Booking saved.";
+    els.bookingStatus.className = "status ok";
+
+    els.bookingOwner.value = "";
+    els.bookingDog.value = "";
+    els.bookingStart.value = "";
+    els.bookingEnd.value = "";
+
+  } catch (err) {
+
+    console.error("Booking save failed:", err);
+
+    els.bookingStatus.textContent = "Could not save booking.";
+    els.bookingStatus.className = "status err";
+
+  }
+
+});
 
     els.genBtn.addEventListener("click", async () => {
       const p = getPayload();
