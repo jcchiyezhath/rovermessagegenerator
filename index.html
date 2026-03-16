@@ -7,6 +7,7 @@
   <style>
     body { font-family: Arial, sans-serif; padding: 14px; max-width: 720px; margin: 0 auto; }
     h2 { margin: 6px 0 12px; }
+    h3 { margin: 0 0 8px; }
     label { display: block; margin-top: 10px; font-size: 14px; }
     select, input, textarea, button {
       width: 100%;
@@ -71,46 +72,40 @@
       border-radius: 10px;
       cursor: pointer;
     }
-.tabs {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 14px;
-  margin-bottom: 14px;
-}
-
-.tab-btn {
-  width: auto;
-  padding: 10px 14px;
-  border-radius: 999px;
-  border: 1px solid #ccc;
-  background: #f7f7f7;
-  cursor: pointer;
-}
-
-.tab-btn.active {
-  background: #111;
-  color: #fff;
-  border-color: #111;
-}
-
-.tab-panel {
-  display: none;
-  margin-top: 10px;
-}
-
-.tab-panel.active {
-  display: block;
-}
-
-.card {
-  border: 1px solid #e5e5e5;
-  border-radius: 14px;
-  padding: 14px;
-  margin-top: 12px;
-  background: #fafafa;
-}
-    
+    .tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+      margin-bottom: 14px;
+    }
+    .tab-btn {
+      width: auto;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid #ccc;
+      background: #f7f7f7;
+      cursor: pointer;
+    }
+    .tab-btn.active {
+      background: #111;
+      color: #fff;
+      border-color: #111;
+    }
+    .tab-panel {
+      display: none;
+      margin-top: 10px;
+    }
+    .tab-panel.active {
+      display: block;
+    }
+    .card {
+      border: 1px solid #e5e5e5;
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: 12px;
+      background: #fafafa;
+    }
   </style>
 </head>
 
@@ -125,93 +120,99 @@
   </div>
 
   <div class="tabs">
-
-<button class="tab-btn active" data-tab="messagesTab">
-Messages
-</button>
-
-<button class="tab-btn" data-tab="availabilityTab">
-Availability
-</button>
-
-<button class="tab-btn" data-tab="addBookingTab">
-Add Booking
-</button>
-
-<button class="tab-btn" data-tab="calendarTab">
-Calendar
-</button>
-
-</div>
+    <button class="tab-btn active" data-tab="messagesTab">Messages</button>
+    <button class="tab-btn" data-tab="availabilityTab">Availability</button>
+    <button class="tab-btn" data-tab="addBookingTab">Add Booking</button>
+    <button class="tab-btn" data-tab="calendarTab">Calendar</button>
+  </div>
 
   <div class="tab-panel active" id="messagesTab">
+    <label>Step</label>
+    <select id="step">
+      <option value="">-- Select --</option>
+      <option value="STEP_1_FIRST_RESPONSE">Step 1 – First response + availability</option>
+      <option value="STEP_2_CONFIRM_DETAILS">Step 2 – Confirm drop-off/pickup/feeding</option>
+      <option value="STEP_2A_MEET_AND_GREET">Step 2A – Meet & greet</option>
+      <option value="STEP_3_BOOKING_ACCEPTED">Step 3 – Booking accepted / next steps</option>
+      <option value="STEP_4_BOOKING_CONFIRMED">Step 4 – Booking confirmed message</option>
+      <option value="STEP_4A_INTAKE_QUESTIONS">Step 4A – Intake questions (after booking)</option>
+      <option value="STEP_5_DAY_BEFORE">Step 5 – Day-before reminder</option>
+      <option value="STEP_5A_PRE_ARRIVAL_CHECKLIST">Step 5A – Pre-arrival checklist</option>
+      <option value="STEP_6_ARRIVAL">Step 6 – Arrival update</option>
+      <option value="STEP_7_DAILY">Step 7 – Daily update</option>
+      <option value="STEP_8_PICKUP_CONFIRM">Step 8 – Pickup confirmation</option>
+      <option value="STEP_9_THANKYOU_REVIEW">Step 9 – Thank you + review</option>
+      <option value="STEP_TIP_THANKYOU">Tip – Thank you for tip</option>
+      <option value="STEP_UNAVAILABLE_OUT_OF_TOWN">Unavailable – Out of town</option>
+    </select>
 
-  <label>Step</label>
-  <select id="step">
-    <option value="">-- Select --</option>
-    <option value="STEP_1_FIRST_RESPONSE">Step 1 – First response + availability</option>
-    <option value="STEP_2_CONFIRM_DETAILS">Step 2 – Confirm drop-off/pickup/feeding</option>
-    <option value="STEP_2A_MEET_AND_GREET">Step 2A – Meet & greet</option>
-    <option value="STEP_3_BOOKING_ACCEPTED">Step 3 – Booking accepted / next steps</option>
-    <option value="STEP_4_BOOKING_CONFIRMED">Step 4 – Booking confirmed message</option>
-    <option value="STEP_4A_INTAKE_QUESTIONS">Step 4A – Intake questions (after booking)</option>
-    <option value="STEP_5_DAY_BEFORE">Step 5 – Day-before reminder</option>
-    <option value="STEP_5A_PRE_ARRIVAL_CHECKLIST">Step 5A – Pre-arrival checklist</option>
-    <option value="STEP_6_ARRIVAL">Step 6 – Arrival update</option>
-    <option value="STEP_7_DAILY">Step 7 – Daily update</option>
-    <option value="STEP_8_PICKUP_CONFIRM">Step 8 – Pickup confirmation</option>
-    <option value="STEP_9_THANKYOU_REVIEW">Step 9 – Thank you + review</option>
-    <option value="STEP_TIP_THANKYOU">Tip – Thank you for tip</option>
-    <option value="STEP_UNAVAILABLE_OUT_OF_TOWN">Unavailable – Out of town</option>
-  </select>
-
-  <div class="grid2">
-    <div>
-      <label>Owner name</label>
-      <input id="owner" placeholder="e.g., Sarah" autocomplete="off" />
+    <div class="grid2">
+      <div>
+        <label>Owner name</label>
+        <input id="owner" placeholder="e.g., Sarah" autocomplete="off" />
+      </div>
+      <div>
+        <label>Pet name</label>
+        <input id="pet" placeholder="e.g., Milo" autocomplete="off" />
+      </div>
     </div>
-    <div>
-      <label>Pet name</label>
-      <input id="pet" placeholder="e.g., Milo" autocomplete="off" />
+
+    <label>Dates</label>
+    <input id="dates" placeholder="e.g., Jan 12–15" autocomplete="off" />
+
+    <div class="grid2">
+      <div>
+        <label>Drop-off time</label>
+        <input id="dropoff" placeholder="e.g., 9:00 AM" autocomplete="off" />
+      </div>
+      <div>
+        <label>Pickup time</label>
+        <input id="pickup" placeholder="e.g., 6:00 PM" autocomplete="off" />
+      </div>
+    </div>
+
+    <label id="feedLabel">Feeding on day 1</label>
+    <select id="feed">
+      <option value="">-- Select feeding preference --</option>
+      <option value="Feed right away at drop-off">Feed right away at drop-off</option>
+      <option value="Wait until their usual feeding time">Wait until their usual feeding time</option>
+      <option value="Owner will message me when to feed">Owner will message me when to feed</option>
+    </select>
+    <div class="muted" id="feedNote">This will be required only for Step 2.</div>
+
+    <div class="row">
+      <button id="genBtn">Generate Message</button>
+      <div class="status" id="status"></div>
+    </div>
+
+    <label>Message</label>
+    <textarea id="out" placeholder="Your message will appear here..."></textarea>
+
+    <div class="row">
+      <button id="copyBtn">Copy</button>
+      <button id="clearBtn">Clear</button>
     </div>
   </div>
 
-  <label>Dates</label>
-  <input id="dates" placeholder="e.g., Jan 12–15" autocomplete="off" />
-
-  <div class="grid2">
-    <div>
-      <label>Drop-off time</label>
-      <input id="dropoff" placeholder="e.g., 9:00 AM" autocomplete="off" />
-    </div>
-    <div>
-      <label>Pickup time</label>
-      <input id="pickup" placeholder="e.g., 6:00 PM" autocomplete="off" />
+  <div class="tab-panel" id="availabilityTab">
+    <div class="card">
+      <h3>Availability Checker</h3>
+      <p>This section will show how many dogs are booked for selected dates.</p>
     </div>
   </div>
 
-  <label id="feedLabel">Feeding on day 1</label>
-  <select id="feed">
-    <option value="">-- Select feeding preference --</option>
-    <option value="Feed right away at drop-off">Feed right away at drop-off</option>
-    <option value="Wait until their usual feeding time">Wait until their usual feeding time</option>
-    <option value="Owner will message me when to feed">Owner will message me when to feed</option>
-  </select>
-  <div class="muted" id="feedNote">This will be required only for Step 2.</div>
-
-  <div class="row">
-    <button id="genBtn">Generate Message</button>
-    <div class="status" id="status"></div>
+  <div class="tab-panel" id="addBookingTab">
+    <div class="card">
+      <h3>Add Booking</h3>
+      <p>This is where we will manually add Rover bookings.</p>
+    </div>
   </div>
 
-  <label>Message</label>
-  <textarea id="out" placeholder="Your message will appear here..."></textarea>
-
-  <div class="row">
-    <button id="copyBtn">Copy</button>
-    <button id="clearBtn">Clear</button>
-  </div>
-
+  <div class="tab-panel" id="calendarTab">
+    <div class="card">
+      <h3>Calendar</h3>
+      <p>This will show your dogs booked by date.</p>
+    </div>
   </div>
 
   <script type="module">
@@ -572,6 +573,27 @@ Thanks so much!`;
       }
     }
 
+    function setupTabs() {
+      const buttons = document.querySelectorAll(".tab-btn");
+      const panels = document.querySelectorAll(".tab-panel");
+
+      buttons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const target = btn.dataset.tab;
+
+          buttons.forEach((b) => b.classList.remove("active"));
+          panels.forEach((p) => p.classList.remove("active"));
+
+          btn.classList.add("active");
+
+          const panel = document.getElementById(target);
+          if (panel) {
+            panel.classList.add("active");
+          }
+        });
+      });
+    }
+
     els.genBtn.addEventListener("click", async () => {
       const p = getPayload();
       const miss = missingFields(p);
@@ -655,42 +677,7 @@ Thanks so much!`;
     loadDraft();
     updateUIByStep();
     loadRecentClients();
-
-    function setupTabs(){
-
-const buttons = document.querySelectorAll(".tab-btn");
-const panels = document.querySelectorAll(".tab-panel");
-
-buttons.forEach(btn => {
-
-function setupTabs(){
-
-const buttons = document.querySelectorAll(".tab-btn");
-const panels = document.querySelectorAll(".tab-panel");
-
-buttons.forEach(btn => {
-
-btn.addEventListener("click", () => {
-
-const target = btn.dataset.tab;
-
-buttons.forEach(b => b.classList.remove("active"));
-panels.forEach(p => p.classList.remove("active"));
-
-btn.classList.add("active");
-
-const panel = document.getElementById(target);
-if(panel){
-panel.classList.add("active");
-}
-
-});
-
-});
-
-}
-
-setupTabs();
+    setupTabs();
   </script>
 </body>
 </html>
