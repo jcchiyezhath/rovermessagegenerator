@@ -71,6 +71,46 @@
       border-radius: 10px;
       cursor: pointer;
     }
+.tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  margin-bottom: 14px;
+}
+
+.tab-btn {
+  width: auto;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid #ccc;
+  background: #f7f7f7;
+  cursor: pointer;
+}
+
+.tab-btn.active {
+  background: #111;
+  color: #fff;
+  border-color: #111;
+}
+
+.tab-panel {
+  display: none;
+  margin-top: 10px;
+}
+
+.tab-panel.active {
+  display: block;
+}
+
+.card {
+  border: 1px solid #e5e5e5;
+  border-radius: 14px;
+  padding: 14px;
+  margin-top: 12px;
+  background: #fafafa;
+}
+    
   </style>
 </head>
 
@@ -83,6 +123,28 @@
     <div id="recentClients" class="recent-list"></div>
     <div id="recentClientsNote" class="muted"></div>
   </div>
+
+  <div class="tabs">
+
+<button class="tab-btn active" data-tab="messagesTab">
+Messages
+</button>
+
+<button class="tab-btn" data-tab="availabilityTab">
+Availability
+</button>
+
+<button class="tab-btn" data-tab="addBookingTab">
+Add Booking
+</button>
+
+<button class="tab-btn" data-tab="calendarTab">
+Calendar
+</button>
+
+</div>
+
+  <div class="tab-panel active" id="messagesTab">
 
   <label>Step</label>
   <select id="step">
@@ -148,6 +210,8 @@
   <div class="row">
     <button id="copyBtn">Copy</button>
     <button id="clearBtn">Clear</button>
+  </div>
+
   </div>
 
   <script type="module">
@@ -591,6 +655,42 @@ Thanks so much!`;
     loadDraft();
     updateUIByStep();
     loadRecentClients();
+
+    function setupTabs(){
+
+const buttons = document.querySelectorAll(".tab-btn");
+const panels = document.querySelectorAll(".tab-panel");
+
+buttons.forEach(btn => {
+
+function setupTabs(){
+
+const buttons = document.querySelectorAll(".tab-btn");
+const panels = document.querySelectorAll(".tab-panel");
+
+buttons.forEach(btn => {
+
+btn.addEventListener("click", () => {
+
+const target = btn.dataset.tab;
+
+buttons.forEach(b => b.classList.remove("active"));
+panels.forEach(p => p.classList.remove("active"));
+
+btn.classList.add("active");
+
+const panel = document.getElementById(target);
+if(panel){
+panel.classList.add("active");
+}
+
+});
+
+});
+
+}
+
+setupTabs();
   </script>
 </body>
 </html>
