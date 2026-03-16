@@ -218,6 +218,7 @@
       <input type="date" id="bookingEnd">
 
       <button id="saveBookingBtn">Save Booking</button>
+      <button id="deleteBookingBtn">Delete Booking</button>
 
       <div id="bookingStatus" class="status"></div>
     </div>
@@ -292,6 +293,7 @@
       bookingStart: document.getElementById("bookingStart"),
       bookingEnd: document.getElementById("bookingEnd"),
       saveBookingBtn: document.getElementById("saveBookingBtn"),
+      deleteBookingBtn: document.getElementById("deleteBookingBtn"),
       bookingStatus: document.getElementById("bookingStatus")
     };
 
@@ -667,6 +669,44 @@ Thanks so much!`;
         }
       });
     }
+
+    if (els.deleteBookingBtn) {
+  els.deleteBookingBtn.addEventListener("click", async () => {
+
+    const owner = els.bookingOwner.value.trim();
+    const dog = els.bookingDog.value.trim();
+    const start = els.bookingStart.value;
+    const end = els.bookingEnd.value;
+
+    if (!owner || !dog || !start || !end) {
+      els.bookingStatus.textContent = "Enter the booking details to delete.";
+      els.bookingStatus.className = "status err";
+      return;
+    }
+
+    try {
+
+      const bookingId = `${owner}-${dog}-${start}-${end}`
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+
+      await deleteDoc(doc(db, "bookings", bookingId));
+
+      els.bookingStatus.textContent = "Booking deleted.";
+      els.bookingStatus.className = "status ok";
+
+    } catch (err) {
+
+      console.error("Delete failed:", err);
+
+      els.bookingStatus.textContent = "Could not delete booking.";
+      els.bookingStatus.className = "status err";
+
+    }
+
+  });
+}
 
     els.genBtn.addEventListener("click", async () => {
       const p = getPayload();
