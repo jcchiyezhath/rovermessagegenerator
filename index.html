@@ -270,6 +270,7 @@
       <option value="STEP_TIP_THANKYOU">Tip – Thank you for tip</option>
       <option value="STEP_UNAVAILABLE_OUT_OF_TOWN">Unavailable – Out of town</option>
       <option value="STEP_NO_RESPONSE_FOLLOWUP">No response – Follow-up</option>
+      <option value="STEP_WONT_BE_ABLE_TO_ACCOMMODATE">Unavailable – Dates booked</option>
     </select>
 
     <div class="grid2">
@@ -501,6 +502,7 @@
       STEP_TIP_THANKYOU: ["owner", "pet"],
       STEP_UNAVAILABLE_OUT_OF_TOWN: ["owner", "pet", "dates"],
       STEP_NO_RESPONSE_FOLLOWUP: ["owner"],
+      STEP_WONT_BE_ABLE_TO_ACCOMMODATE: ["owner"],
     };
 
     function setStatus(text, ok) {
@@ -659,6 +661,11 @@ Thanks so much!`;
           case "STEP_NO_RESPONSE_FOLLOWUP":
           return `Hi ${p.owner} 😊
 Just checking in since we haven’t heard back, we’ll go ahead and open those dates for other requests for now. If you still need care, feel free to message us anytime and we’ll do our best to help if we’re available.`;
+
+          case "STEP_WONT_BE_ABLE_TO_ACCOMMODATE":
+  return `Hi ${p.owner}, just following up as we haven’t heard back. We’ve gone ahead and confirmed another booking for those dates, so we won’t be able to accommodate this request.
+
+If your plans change in the future, feel free to reach out. Thank you!`;
 
         default:
           return "";
