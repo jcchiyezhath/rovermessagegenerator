@@ -231,6 +231,23 @@
       line-height: 1.2;
       word-break: break-word;
     }
+    .dog-start {
+  background: #e9f8ee;
+  border-color: #b6e2c1;
+  color: #186a2c;
+}
+
+.dog-end {
+  background: #fde7e7;
+  border-color: #f5b5b5;
+  color: #9f1d1d;
+}
+
+.dog-stay {
+  background: #f2f2f2;
+  border-color: #e5e5e5;
+  color: #444;
+}
   </style>
 </head>
 
@@ -1081,7 +1098,23 @@ If your plans change in the future, feel free to reach out. Thank you!`;
         const count = bookings.length;
         const isFull = count >= DOG_LIMIT;
 
-        const chips = bookings.map((b) => `<div class="dog-chip">${b.dog}</div>`).join("");
+        const chips = bookings.map((b) => {
+  let tag = "";
+  let extraClass = "";
+
+  if (isoDate === b.start) {
+    tag = "Start";
+    extraClass = "dog-start";
+  } else if (isoDate === b.end) {
+    tag = "End";
+    extraClass = "dog-end";
+  } else {
+    tag = "Stay";
+    extraClass = "dog-stay";
+  }
+
+  return `<div class="dog-chip ${extraClass}">${b.dog} (${tag})</div>`;
+}).join("");
 
         gridHTML += `
           <div class="calendar-cell ${otherMonth ? "other-month" : ""}">
