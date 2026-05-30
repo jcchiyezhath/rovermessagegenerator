@@ -298,6 +298,7 @@
       <option value="STEP_UNAVAILABLE_OUT_OF_TOWN">Unavailable – Out of town</option>
       <option value="STEP_NO_RESPONSE_FOLLOWUP">No response – Follow-up</option>
       <option value="STEP_WONT_BE_ABLE_TO_ACCOMMODATE">Unavailable – Dates booked</option>
+      <option value="STEP_SHORT_NOTICE_UNAVAILABLE">Unavailable – Short notice / Meet &amp; Greet required</option>
     </select>
 
     <div class="grid2">
@@ -540,6 +541,7 @@
       STEP_UNAVAILABLE_OUT_OF_TOWN: ["owner", "pet", "dates"],
       STEP_NO_RESPONSE_FOLLOWUP: ["owner"],
       STEP_WONT_BE_ABLE_TO_ACCOMMODATE: ["owner"],
+      STEP_SHORT_NOTICE_UNAVAILABLE: ["owner", "pet"],
     };
 
     function setStatus(text, ok) {
@@ -703,6 +705,17 @@ Just checking in since we haven’t heard back, we’ll go ahead and open those 
   return `Hi ${p.owner}, just following up as we haven’t heard back. We’ve gone ahead and confirmed another booking for those dates, so we won’t be able to accommodate this request.
 
 If your plans change in the future, feel free to reach out. Thank you!`;
+
+        case "STEP_SHORT_NOTICE_UNAVAILABLE":
+          return `Hi ${p.owner},
+
+Thank you for reaching out and considering us for ${p.pet}'s care. Unfortunately, due to the short notice, we won't be able to accommodate this request.
+
+We require some advance notice so we can schedule a meet and greet beforehand and make sure ${p.pet} is comfortable with us and our environment. This helps us provide the best and safest experience for every pet in our care.
+
+We truly appreciate you thinking of us. For future boarding needs, please feel free to reach out a little earlier, and we'd be happy to see if we can accommodate ${p.pet} and plan accordingly.
+
+Thank you again, and we hope to work with you in the future!`;
 
         default:
           return "";
